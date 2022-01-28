@@ -1,14 +1,59 @@
+html{
+  height: 100%;
+  width: 100%;
+}
+
 body {
-  background: #000000;
+  height: 100%;
+  width: 100%;
+  background-image:url(./image/mobile_bg.jpg);
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-size:cover;
+  background-position: center center;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 680px) {
+  body{
+    background-image:url(./image/mars_Mission_bg.png);
+    background-position: center center;
+    backdrop-filter: blur(5px);
+  }
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+li{
+  list-style-type:none;
+}
+
+.links_img *{
+  color:#09c27b;
+  fill:#08c57d;
+}
+
+.more{
+  margin-left:6px;
+}
+
+.more_expand {
+  transform: rotate(180deg);
+}
+
+.icon_web{
+  width: 260px;
+  height: 95px;
+}
+
+@media (max-width: 680px) {
+  .icon_web{
+    width: 85px;
+    height: 70px;
+
+    margin-right: 10px;
+  }
 }

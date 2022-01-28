@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import * as anchor from '@project-serum/anchor';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Container, Snackbar } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
@@ -19,6 +19,7 @@ import { AlertState } from './utils';
 import { Header } from './Header';
 import { MintButton } from './MintButton';
 import { GatewayProvider } from '@civic/solana-gateway-react';
+import {ReactComponent as More} from "./image/more.svg"
 
 const ConnectButton = styled(WalletDialogButton)`
   width: 100%;
@@ -30,6 +31,76 @@ const ConnectButton = styled(WalletDialogButton)`
   font-size: 16px;
   font-weight: bold;
 `;
+
+const AnimationTextBottom = keyframes`
+  0% {
+    max-width:200px;
+    height:35px;
+  }
+
+  100% {
+    max-width:100%;
+    height: 455px;
+  }
+`
+
+const AnimationTextTop = keyframes`
+  0% {
+    max-width: 100%;
+    height:455px;
+  }
+
+  100% {
+    max-width:200px;
+    height:35px;
+  }
+`
+
+interface propsText {
+  height: string;
+  maxWidth: string;
+  isAnimation: boolean;
+  isOverflow: string;
+}
+
+const MainText = styled.p.attrs((props: propsText) => props)`
+  height:${(props) => props.height};
+  max-width:${(props) => props.maxWidth};
+  overflow: hidden;
+  color: white;
+  background-color:#3f3f3f8d;
+  backdrop-filter: blur(5px);
+  padding:15px;
+  font-family: arial bold;
+  font-size: 20px;
+  line-height:38px;
+  font-weight: bolder;
+  text-align: center;
+  border-radius:10px;
+  margin: 0 auto;
+  margin-top:30px;
+  overflow: ${(props) => props.isOverflow};
+
+  &::-webkit-scrollbar{
+    width: 6px;
+    background: #27aa99;
+  }
+
+  @media (max-width:670px) {
+    max-width: 100%;
+    color: #d32dcd;
+  };
+
+  animation: ${(props) => props.isAnimation ? AnimationTextBottom : AnimationTextTop} 1s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+`;
+
+const TextMore = styled.p`
+  color:white;
+  margin: 0;
+  cursor:pointer;
+`
 
 const MintContainer = styled.div``; // add your owns styles here
 
@@ -43,6 +114,7 @@ export interface HomeProps {
 
 const Home = (props: HomeProps) => {
   const [isUserMinting, setIsUserMinting] = useState(false);
+  const [isText, setIsText] = useState(false);
   const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
   const [alertState, setAlertState] = useState<AlertState>({
     open: false,
@@ -162,8 +234,8 @@ const Home = (props: HomeProps) => {
   ]);
 
   return (
-    <Container style={{ marginTop: 100 }}>
-      <Container maxWidth="xs" style={{ position: 'relative' }}>
+    <Container>
+      <Container maxWidth="xs" style={{ position: 'relative', marginTop: 100 }}>
         <Paper
           style={{ padding: 24, backgroundColor: '#151A1F', borderRadius: 6 }}
         >
@@ -222,6 +294,53 @@ const Home = (props: HomeProps) => {
           {alertState.message}
         </Alert>
       </Snackbar>
+
+      <MainText 
+        height={`${isText ? '455px' : '35px'}`}
+        maxWidth={`${isText ? '100%' : '200px'}`}
+        isAnimation={isText}
+        isOverflow={`${isText ? 'auto' : 'hidden'}`}
+      >
+
+        <TextMore onClick={() => {setIsText(!isText)}} >
+          To learn more <span><More className={`more ${!isText && "more_expand" }`} /></span>
+        </TextMore>
+          Degen Nation - Mars Mission
+          <br />
+          6969 anons are building a new nation on Mars.
+          <br />
+          A PFP collection that gives you access to 3D metaverse avatars & is a membership pass to a DAO.
+          <br />
+          Releases in 2 drops. 
+          <br />
+          1st drop 30th Jan. 2022 - 3484 female Degens (35 1/1 included)
+          <br />
+          2nd drop mid March 2022 - 3484 male Degens
+          <br />
+          (NFT #6969 will be a special one - TBA)
+          <br />
+          1st Drop Details
+          <br />
+          Mint-Date: 30. Jan. 2022 - 6PM UTC
+          <br />
+          Total Supply: 3484 (-151 marketing/collabs/team DAO memberships)
+          <br />
+          Mint-Price: 2 $SOL
+          <br />
+          Utility:
+          <ul>
+            <li>- DAO membership</li>
+            <li>- VIP access to IRL events hosted by us(in Europe)</li>
+            <li>- free hoodie from our 1st collection for holders</li>
+            <li>- DAO deceides the mint price of the 2nd drop(social experiment)</li>
+          </ul>
+          <br />
+          For the detailed roadmap & blackpaper, please check out Discord channel "Roadmap"
+          <br />
+          "Wait, female & male characters, will there be breeding?"
+          <br />
+          "Breeding? Are we animals? We call it fucking!"
+      </MainText>
     </Container>
   );
 };

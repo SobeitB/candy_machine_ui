@@ -2,6 +2,12 @@ import './App.css';
 import { useMemo } from 'react';
 import * as anchor from '@project-serum/anchor';
 import Home from './Home';
+import styled from 'styled-components';
+import {ReactComponent as Discord} from "./image/discord.svg"
+import {ReactComponent as Twitter} from "./image/twitter.svg"
+
+import mobile_icons from "./image/icons/mobile_icons.png"
+import pc_icons from "./image/icons/pc_icons.png"
 
 import { clusterApiUrl } from '@solana/web3.js';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
@@ -50,6 +56,36 @@ const connection = new anchor.web3.Connection(rpcHost
 const startDateSeed = parseInt(process.env.REACT_APP_CANDY_START_DATE!, 10);
 const txTimeoutInMilliseconds = 30000;
 
+const Header = styled.header`
+  max-width: 100%;
+  height:64px;
+  background-color:#242424;
+  opacity: 0.7;
+`;
+
+const HeaderConatiner = styled.header`
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+
+  max-width:1440px;
+  height:100%;
+  margin: 0 auto;
+  padding: 0 30px;
+`;
+
+const LinksContainer = styled.div`
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  width: 170px;
+  height:100%;
+
+  @media (max-width: 680px) {
+    width: 130px;
+  }
+`;
+
 const App = () => {
   const endpoint = useMemo(() => clusterApiUrl(network), []);
 
@@ -69,6 +105,25 @@ const App = () => {
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets} autoConnect>
           <WalletDialogProvider>
+            <Header>
+              <HeaderConatiner>
+                <img 
+                  className="icon_web" 
+                  src={document.body.clientWidth < 680 ? mobile_icons : pc_icons } 
+                  alt=""
+                />
+                
+                <LinksContainer>
+                  <a href="https://discord.gg/DegenNation69" >
+                    <Discord className="links_img discord" />
+                  </a>
+
+                  <a href="https://twitter.gg/DegenNation69" >
+                    <Twitter className="links_img " />
+                  </a>
+                </LinksContainer>
+              </HeaderConatiner>
+            </Header>
             <Home
               candyMachineId={candyMachineId}
               connection={connection}
